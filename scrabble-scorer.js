@@ -33,26 +33,103 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
+  console.log("Let's play some scrabble!");
+  let inWord = input.question("Enter a word to score: ");
+  //console.log(oldScrabbleScorer(inWord));
+  //console.log(simpleScore(inWord));
+  //console.log(vowelBonusScore(inWord));
+  return inWord;
 };
 
-let simpleScore;
+let simpleScore = function(inWord) {
+  return inWord.length;
+}
 
-let vowelBonusScore;
+let vowelBonusScore = function(inWord) {
+  let score = 0;
+  inWord = inWord.toLowerCase();
+  for (i = 0; i < inWord.length; i++) {
+    if (inWord.charAt(i) === 'a'
+      || inWord.charAt(i) === 'e'
+      || inWord.charAt(i) === 'i'
+      || inWord.charAt(i) === 'o'
+      || inWord.charAt(i) === 'u') {
+        score += 3;
+      }
+    else {
+      score += 1;
+    }
+  }
+  return score;
+}
 
-let scrabbleScore;
+let scrabbleScore = function (word) {
+	word = word.toLowerCase();
+	let letterPoints = 0;
+ 
+	for (let i = 0; i < word.length; i++) {
+    letterPoints += newPointStructure[word[i]];
+	}
 
-const scoringAlgorithms = [];
+	return letterPoints;
+}
 
-function scorerPrompt() {}
+let simpleScoreObj = ["Simple Score", "Each letter is worth 1 point.", "A function with a parameter for user input that returns a score."];
+let bonusVowelsObj = ["Bonus Vowels", "Vowels are 3 pts, consonants are 1pt.", "A function that returns a score based on the number of vowels and consonants."];
+let scrabbleObj = ["Scrabbel", "The traditional scoring algorithm", "Uses the oldScrabbleScorer() function to determine the score for a given word."];
 
-function transform() {};
+const scoringAlgorithms = [simpleScoreObj, bonusVowelsObj, scrabbleObj];
 
-let newPointStructure;
+function scorerPrompt() {
+  let selOption = input.question("Which scoring algorithm would you like to use?\n\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: ");
+  return selOption;
+}
+
+function transform(oldPointStructure) {
+	return oldPointStructure = {
+    a: 1,
+    e: 1,
+    i: 1,
+    o: 1,
+    u: 1,
+    l: 1,
+    n: 1,
+    r: 1,
+    s: 1,
+    t: 1,
+    d: 2,
+    g: 2,
+    b: 3,
+    c: 3,
+    m: 3,
+    p: 3,
+    f: 4,
+    h: 4,
+    v: 4,
+    w: 4,
+    y: 4,
+    k: 5,
+    j: 8,
+    x: 8,
+    q: 10,
+    z: 10
+  }
+}
+
+let newPointStructure = transform(oldPointStructure);
 
 function runProgram() {
-   initialPrompt();
-   
+  let chosenWord = initialPrompt();
+  let scoreOption = scorerPrompt();
+  if (scoreOption === '0') {
+    console.log(simpleScore(chosenWord));
+  }
+  else if (scoreOption === '1') {
+    console.log(vowelBonusScore(chosenWord));
+  }
+  else if (scoreOption === '2') {
+    console.log(scrabbleScore(chosenWord));
+  }
 }
 
 // Don't write any code below this line //
